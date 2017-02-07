@@ -1,34 +1,43 @@
-
+/*
+December 5th, 2016 /r/DailyProgrammer challenge
+Difficulty: Easy
+Bonus 1: Complete
+Bonus 2:
+Bonus 3:
+*/
 
 package main
 
 import (
 	"fmt"
-	"bufio"
-	"os"
+	//"bufio"
+	//"os"
 	"math/rand"
 )
 
 func main(){
-	reader := bufio.NewReader(os.Stdin)
+	//reader := bufio.NewReader(os.Stdin)
 	tiles := [7]rune{}
-	alphabet := "abcdefghijklmnopqrstuvwxyz"
+	alphabet := "abcdefghijklmnopqrstuvwxyz?"
 
 	for i := 0; i < 7; i++ {
 		tiles[i] = rune(alphabet[rand.Intn(len(alphabet)-1)])
 	}
 
-	fmt.Println("Your tiles are ", tiles, "\nEnter your word:")
-	word, _ := reader.ReadString('\n')
+
+	//fmt.Println("Your tiles are ", tiles, "\nEnter your word:")
+	//word, _ := reader.ReadString('\n')
+	word := "paper"
 
 	possibleWord := scrabble(tiles, word)
-	fmt.Println("The statement your word works with your tiles is :", possibleWord)
+	fmt.Println("The statement your word works with your tiles is :", possibleWord) //true or false
 
 }
 
 func scrabble(tiles [7]rune, word string) bool{
-	var letterWorks bool 
+	letterWorks := false
 	succesfulWord := true
+	blankTileAccepted := false
 
 	for _, letter := range word {
 		//loop through all the letters in the word entered by the user
@@ -42,9 +51,19 @@ func scrabble(tiles [7]rune, word string) bool{
 		}
 
 		if !letterWorks {
-			succesfulWord = false
+			//check to see if there is a blank tile in the tiles array 
+			for y, tile := range tiles {
+				if string(tile) == "?"{
+					tiles[y] = '*'
+					blankTileAccepted = true 
+					break
+				}
+			}
+			if !blankTileAccepted{
+				succesfulWord = false
+			}
 		}
-
+		blankTileAccepted = false
 		letterWorks = false
 	}
 
