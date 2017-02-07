@@ -2,8 +2,8 @@
 December 5th, 2016 /r/DailyProgrammer challenge
 Difficulty: Easy
 Bonus 1: Complete
-Bonus 2:
-Bonus 3:
+Bonus 2: Incomplete
+Bonus 3: Adjusted (built a point system into the game, not a points system into word list)
 */
 
 package main
@@ -20,6 +20,7 @@ func main(){
 	tiles := [7]rune{}
 	alphabet := "abcdefghijklmnopqrstuvwxyz?"
 
+
 	for i := 0; i < 7; i++ {
 		tiles[i] = rune(alphabet[rand.Intn(len(alphabet)-1)])
 	}
@@ -27,17 +28,20 @@ func main(){
 
 	fmt.Println("Your tiles are ", tiles, "\nEnter your word:")
 	word, _ := reader.ReadString('\n')
-	
+	totalPoints := checkPoints(word)	
 
 	possibleWord := scrabble(tiles, word)
 	fmt.Println("The statement your word works with your tiles is :", possibleWord) //true or false
-
+	if possibleWord{
+		fmt.Println("Your total points are:", totalPoints)
+	}
 }
 
 func scrabble(tiles [7]rune, word string) bool{
 	letterWorks := false
 	succesfulWord := true
 	blankTileAccepted := false
+
 
 	for _, letter := range word {
 		//loop through all the letters in the word entered by the user
@@ -69,3 +73,22 @@ func scrabble(tiles [7]rune, word string) bool{
 
 	return succesfulWord
 }
+
+func checkPoints(word string) int {
+	alphabet := "abcdefghijklmnopqrstuvwxyz?"
+	letterPoints := []int{1, 3, 3, 2, 1, 4, 2, 4, 1, 8, 5, 1, 3, 1, 1, 3, 
+						10, 1, 1, 1, 1, 4, 4, 8, 4, 10} 
+
+	points := 0
+
+	for _, wordElement := range word{
+		for y, letter := range alphabet{
+			if string(wordElement) == string(letter){
+				points += letterPoints[y]
+				break
+			}
+		}
+	} 
+
+	return points
+} 
